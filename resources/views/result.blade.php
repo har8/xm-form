@@ -3,31 +3,32 @@
 @section('content')
 <h2>{{ $companyName }}</h2>
 <p>From: {{ $startDate }}   To: {{ $endDate }}</p>
-
-<table id="historicalTable" class="display mb-5">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Open</th>
-            <th>High</th>
-            <th>Low</th>
-            <th>Close</th>
-            <th>Volume</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach ($historicalData as $data)
+<div class="mb-5">
+    <table id="historicalTable" class="display">
+        <thead>
             <tr>
-                <td>{{ $data['date'] }}</td>
-                <td>{{ $data['open'] }}</td>
-                <td>{{ $data['high'] }}</td>
-                <td>{{ $data['low'] }}</td>
-                <td>{{ $data['close'] }}</td>
-                <td>{{ $data['volume'] }}</td>
+                <th>Date</th>
+                <th>Open</th>
+                <th>High</th>
+                <th>Low</th>
+                <th>Close</th>
+                <th>Volume</th>
             </tr>
-        @endforeach
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        @foreach ($historicalData as $data)
+                <tr>
+                    <td>{{ $data['date'] }}</td>
+                    <td>{{ $data['open'] }}</td>
+                    <td>{{ $data['high'] }}</td>
+                    <td>{{ $data['low'] }}</td>
+                    <td>{{ $data['close'] }}</td>
+                    <td>{{ $data['volume'] }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 <canvas id="chart"></canvas>
 @endsection
 
