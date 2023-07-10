@@ -1,43 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h2>{{ $companyName }}</h2>
-                <p>From: {{ $startDate }}</p>
-                <p>To: {{ $endDate }}</p>
+<h2>{{ $companyName }}</h2>
+<p>From: {{ $startDate }}</p>
+<p>To: {{ $endDate }}</p>
 
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Open</th>
-                            <th>High</th>
-                            <th>Low</th>
-                            <th>Close</th>
-                            <th>Volume</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($historicalData as $data)
-                            <tr>
-                                <td>{{ $data['date'] }}</td>
-                                <td>{{ $data['open'] }}</td>
-                                <td>{{ $data['high'] }}</td>
-                                <td>{{ $data['low'] }}</td>
-                                <td>{{ $data['close'] }}</td>
-                                <td>{{ $data['volume'] }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Open</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Close</th>
+            <th>Volume</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($historicalData as $data)
+            <tr>
+                <td>{{ $data['date'] }}</td>
+                <td>{{ $data['open'] }}</td>
+                <td>{{ $data['high'] }}</td>
+                <td>{{ $data['low'] }}</td>
+                <td>{{ $data['close'] }}</td>
+                <td>{{ $data['volume'] }}</td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
 
-                <canvas id="chart"></canvas>
-            </div>
-        </div>
-    </div>
+<canvas id="chart"></canvas>
 
+@endsection
+@section('js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Prepare data for chart

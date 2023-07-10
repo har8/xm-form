@@ -55,7 +55,7 @@ class FormController extends Controller
             'symbol' => $request->company_symbol,
             'region' => 'US',
         ]);
-dd($response->json());
+
         // Parse the API response and extract the historical data
         $historicalData = $response->json()['prices'];
 
