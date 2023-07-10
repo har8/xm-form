@@ -47,8 +47,8 @@ class FormController extends Controller
         // Fetch historical data using the provided API
         $apiUrl = 'https://yh-finance.p.rapidapi.com/stock/v3/get-historical-data';
         $response = Http::withHeaders([
-            'X-RapidAPI-Key' => env('X-RapidAPI-Key'),
-            'X-RapidAPI-Host' => env('X-RapidAPI-Host'),
+            'X-RapidAPI-Key' => $_ENV['X_RAPIDAPI_KEY'],
+            'X-RapidAPI-Host' => $_ENV['X_RAPIDAPI_HOST'],
         ])->get($apiUrl, [
             'symbol' => $symbol,
             'region' => 'US',
