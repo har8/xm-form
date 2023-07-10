@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<a href="{{ route('form.create') }}" class="btn btn-primary">Back to Form</a>
 <h2>{{ $companyName }}</h2>
 <p>From: {{ $startDate }}   To: {{ $endDate }}</p>
 <div class="mb-5">
