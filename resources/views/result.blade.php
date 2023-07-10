@@ -17,14 +17,14 @@
             </tr>
         </thead>
         <tbody>
-        @foreach ($historicalData as $data)
+        @foreach ($historicalData as $key => $data) 
                 <tr>
                     <td>{{ $data['date'] }}</td>
-                    <td>{{ $data['open'] }}</td>
-                    <td>{{ $data['high'] }}</td>
-                    <td>{{ $data['low'] }}</td>
-                    <td>{{ $data['close'] }}</td>
-                    <td>{{ $data['volume'] }}</td>
+                    <td>{{ $data['open'] ?? '' }}</td>
+                    <td>{{ $data['high'] ?? '' }}</td>
+                    <td>{{ $data['low'] ?? '' }}</td>
+                    <td>{{ $data['close'] ?? '' }}</td>
+                    <td>{{ $data['volume'] ?? '' }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -43,9 +43,9 @@
         var openPrices = [];
         var closePrices = [];
         @foreach ($historicalData as $data)
-            labels.push('{{ $data['date'] }}');
-            openPrices.push('{{ $data['open'] }}');
-            closePrices.push('{{ $data['close'] }}');
+            labels.push('{{ $data['date'] ?? '' }}');
+            openPrices.push('{{ $data['open'] ?? '' }}');
+            closePrices.push('{{ $data['close'] ?? '' }}');
         @endforeach
 
         // Create chart
