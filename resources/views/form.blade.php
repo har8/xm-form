@@ -10,6 +10,15 @@
                 </div>
                 <form action="{{ route('form.store') }}" method="POST">
                     @csrf
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="mb-3">
                         <label for="company_symbol">Company Symbol</label>
                         <select name="company_symbol" id="company_symbol" class="form-control" required>
