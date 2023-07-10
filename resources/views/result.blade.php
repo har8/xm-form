@@ -2,10 +2,9 @@
 
 @section('content')
 <h2>{{ $companyName }}</h2>
-<p>From: {{ $startDate }}</p>
-<p>To: {{ $endDate }}</p>
+<p>From: {{ $startDate }}   To: {{ $endDate }}</p>
 
-<table id="historicalTable" class="display">
+<table id="historicalTable" class="display mb-5">
     <thead>
         <tr>
             <th>Date</th>
@@ -29,10 +28,9 @@
         @endforeach
     </tbody>
 </table>
-
 <canvas id="chart"></canvas>
-
 @endsection
+
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
