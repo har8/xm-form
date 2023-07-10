@@ -31,7 +31,8 @@
             </div>
         </div>
     </div>
-
+@endsection
+@section('js')
     <script>
         // Initialize datepicker
         $(document).ready(function() {
