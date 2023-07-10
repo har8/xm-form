@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+@if (session('warning'))
+    <div class="alert alert-warning">
+        {{ session('warning') }}
+    </div>
+@endif
 <form action="{{ route('form.store') }}" method="POST">
     @csrf
     @if ($errors->any())

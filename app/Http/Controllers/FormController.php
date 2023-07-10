@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Redirect;
 use App\Mail\CompanyDataEmail;
 
 
@@ -46,32 +47,40 @@ class FormController extends Controller
         // Retrieve company name from the symbol using the cache
         $companyName = $this->symbolData->firstWhere('Symbol', $request->company_symbol)['Company Name'];
 
-        // Fetch historical data using the provided API
-        $apiUrl = 'https://yh-finance.p.rapidapi.com/stock/v3/get-historical-data';
-        $response = Http::withHeaders([
-            'X-RapidAPI-Key' => $_ENV['X_RAPIDAPI_KEY'],
-            'X-RapidAPI-Host' => $_ENV['X_RAPIDAPI_HOST'],
-        ])->get($apiUrl, [
-            'symbol' => $request->company_symbol,
-            'region' => 'US',
-        ]);
+		try{
+			$apiUrl = 'https://yh-finance.p.rapidapi.com/stock/v3/get-historical-data';
+			$response = Http::withHeaders([
+				'X-RapidAPI-Key' => $_ENV['X_RAPIDAPI_KEY'],
+				'X-RapidAPI-Host' => $_ENV['X_RAPIDAPI_HOST'],
+			])->get($apiUrl, [
+				'symbol' => $request->company_symbol
+			]);
+			
+			if ($response->successful()) {
+				// Parse the API response and extract the historical data
+				$historicalData = $response->json()['prices'];
 
-        // Parse the API response and extract the historical data
-        $historicalData = $response->json()['prices'];
-
-        // Send the email
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
-        $email = $request->input('email');
-        
-        Mail::to($email)->send(new CompanyDataEmail([
-            'companyName' => $companyName,
-            'startDate' => $startDate,
-            'endDate' => $endDate,
-        ]));
-
-        // Return the response or redirect to the appropriate view
-        return view('result', compact('historicalData', 'companyName', 'startDate', 'endDate'));
+				// Send the email
+				$startDate = $request->input('start_date');
+				$endDate = $request->input('end_date');
+				$email = $request->input('email');
+		/*        
+				Mail::to($email)->send(new CompanyDataEmail([
+					'companyName' => $companyName,
+					'startDate' => $startDate,
+					'endDate' => $endDate,
+				]));
+		*/
+				return view('result', compact('historicalData', 'companyName', 'startDate', 'endDate'));	
+			}else{
+				throw new \Exception('Oops!! Service is unavailable, please try again later.');
+			}
+	dd($response);
+			
+		} catch (\Exception $e) {
+			$errorMessage = $e->getMessage();
+			return Redirect::back()->with('warning', $errorMessage)->withInput();
+		}
     }
 
     private function fetchSymbolData()
