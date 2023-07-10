@@ -63,7 +63,12 @@ dd($response->json());
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $email = $request->input('email');
-        Mail::to($email)->send(new CompanyDataEmail($companyName, $startDate, $endDate));
+        
+        Mail::to($email)->send(new CompanyDataEmail([
+            'companyName' => $companyName,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+        ]));
 
         // Return the response or redirect to the appropriate view
         return view('result', compact('historicalData', 'companyName', 'startDate', 'endDate'));

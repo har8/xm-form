@@ -1,4 +1,11 @@
-<h1>{{ $companyName }}</h1>
-<p>From: {{ $startDate }}</p>
-<p>To: {{ $endDate }}</p>
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Company: {{ $companyName }}</title>
+</head>
+<body>
+    <h2>{{ $companyName }}</h2>
+    <p><strong>From:</strong> {{ $startDate }}</p>
+    <p><strong>To:</strong> {{ $endDate }}</p>
+</body>
+</html>

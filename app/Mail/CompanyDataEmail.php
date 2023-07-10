@@ -1,65 +1,35 @@
 <?php
 
-namespace App\Mail;
-
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+namespace App\Mail;use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class CompanyDataEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $emailData;
+
     /**
      * Create a new message instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: 'Company Data Email',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'view.name',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @param  array  $emailData
+     * @return void
      */
-    public function attachments(): array
+    public function __construct(array $emailData)
     {
-        return [];
+        $this->emailData = $emailData;
     }
 
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
     public function build()
     {
-         return $this->subject($this->companyName)
-                ->view('emails.company_data')
-                ->with([
-                    'companyName' => $this->companyName,
-                    'startDate' => $this->startDate,
-                    'endDate' => $this->endDate,
-                ]);
-   }
-
+        return $this->subject($this->emailData['companyName'])
+            ->view('emails.company_data')
+            ->with($this->emailData);
+    }
 }
