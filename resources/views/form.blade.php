@@ -14,9 +14,11 @@
                         <label for="company_symbol">Company Symbol</label>
                         <select name="company_symbol" id="company_symbol" class="form-control">
                             <option value="">Select a symbol</option>
-                            @foreach ($symbolData as $symbol)
-                                <option value="{{ $symbol['Symbol'] }}">{{ $symbol['Symbol'] }} - {{ $symbol['Company Name'] }}</option>
-                            @endforeach
+                            @if (!empty($symbolData))
+                                @foreach ($symbolData as $symbol)
+                                    <option value="{{ $symbol['Symbol'] }}">{{ $symbol['Symbol'] }} - {{ $symbol['Company Name'] }}</option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                     <div class="mb-3">
