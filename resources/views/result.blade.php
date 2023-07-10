@@ -5,7 +5,7 @@
 <p>From: {{ $startDate }}</p>
 <p>To: {{ $endDate }}</p>
 
-<table class="table table-striped">
+<table id="historicalTable" class="display">
     <thead>
         <tr>
             <th>Date</th>
@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($historicalData as $data)
+    @foreach ($historicalData as $data)
             <tr>
                 <td>{{ $data['date'] }}</td>
                 <td>{{ $data['open'] }}</td>
@@ -35,6 +35,8 @@
 @endsection
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
     <script>
         // Prepare data for chart
         var labels = [];
@@ -65,6 +67,10 @@
                 }]
             },
             options: {}
+        });
+
+        $(document).ready(function() {
+            $('#historicalTable').DataTable();
         });
     </script>
 @endsection
