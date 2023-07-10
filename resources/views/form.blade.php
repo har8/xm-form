@@ -11,8 +11,13 @@
                 <form action="{{ route('form.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="symbol" class="form-label">Company Symbol</label>
-                        <input type="text" class="form-control" id="symbol" name="symbol" value="{{ old('symbol') }}">
+                        <label for="company_symbol">Company Symbol</label>
+                        <select name="company_symbol" id="company_symbol" class="form-control">
+                            <option value="">Select a symbol</option>
+                            @foreach ($symbolData as $symbol)
+                                <option value="{{ $symbol['Symbol'] }}">{{ $symbol['Symbol'] }} - {{ $symbol['Company Name'] }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="start_date" class="form-label">Start Date</label>
