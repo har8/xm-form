@@ -43,9 +43,11 @@
         var openPrices = [];
         var closePrices = [];
         @foreach ($historicalData as $data)
-            labels.push('{{ $data['date'] ?? '' }}');
-            openPrices.push('{{ $data['open'] ?? '' }}');
-            closePrices.push('{{ $data['close'] ?? '' }}');
+			@if (isset($data['open']) && isset($data['close']))
+				labels.push('{{ $data['date']}}');
+				openPrices.push('{{ $data['open'] ?? '' }}');
+				closePrices.push('{{ $data['close'] ?? '' }}');
+			@endif
         @endforeach
 
         // Create chart

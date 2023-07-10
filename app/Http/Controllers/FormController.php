@@ -74,9 +74,7 @@ class FormController extends Controller
 				return view('result', compact('historicalData', 'companyName', 'startDate', 'endDate'));	
 			}else{
 				throw new \Exception('Oops!! Service is unavailable, please try again later.');
-			}
-	dd($response);
-			
+			}			
 		} catch (\Exception $e) {
 			$errorMessage = $e->getMessage();
 			return Redirect::back()->with('warning', $errorMessage)->withInput();
