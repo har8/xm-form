@@ -13,4 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return view('form');
+});
+
 Route::post('/form', [FormController::class, 'store'])->name('form.store');
+
