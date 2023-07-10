@@ -6,15 +6,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Collection;
 use App\Mail\CompanyDataEmail;
+
 
 class FormController extends Controller
 {
+    private $symbolData;
+
+    public function __construct()
+    {
+        $this->symbolData = Cache::remember('symbolData', 60 * 60, function () {
+            return collect($this->fetchSymbolData());
+        });
+    }
+
     public function create()
     {
-        $symbolData = $this->fetchSymbolData();
-
-        return view('form', compact('symbolData'));
+        
+        return view('form')->with('symbolData', $this->symbolData);
     }
 
     public function store(Request $request)
@@ -32,17 +43,8 @@ class FormController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // Retrieve company name from the symbol using the provided JSON file
-        $symbolsJson = Http::get('https://pkgstore.datahub.io/core/nasdaq-listings/nasdaq-listed_json/data/a5bc7580d6176d60ac0b2142ca8d7df6/nasdaq-listed_json.json');
-        $symbolsData = $symbolsJson->json();
-        $symbol = strtoupper($request->input('symbol'));
-        $companyName = '';
-        foreach ($symbolsData as $symbolData) {
-            if ($symbolData['Symbol'] === $symbol) {
-                $companyName = $symbolData['Company Name'];
-                break;
-            }
-        }
+        // Retrieve company name from the symbol using the cache
+        $companyName = $this->symbolData->firstWhere('Symbol', $request->company_symbol)['Company Name'];
 
         // Fetch historical data using the provided API
         $apiUrl = 'https://yh-finance.p.rapidapi.com/stock/v3/get-historical-data';
@@ -50,12 +52,12 @@ class FormController extends Controller
             'X-RapidAPI-Key' => $_ENV['X_RAPIDAPI_KEY'],
             'X-RapidAPI-Host' => $_ENV['X_RAPIDAPI_HOST'],
         ])->get($apiUrl, [
-            'symbol' => $symbol,
+            'symbol' => $request->company_symbol,
             'region' => 'US',
         ]);
-
+dd($response->json());
         // Parse the API response and extract the historical data
-        $historicalData = $response->json()['historical'];
+        $historicalData = $response->json()['prices'];
 
         // Send the email
         $startDate = $request->input('start_date');
@@ -77,6 +79,5 @@ class FormController extends Controller
     
         return [];
     }
-
-
+   
 }
