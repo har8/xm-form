@@ -12,7 +12,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="company_symbol">Company Symbol</label>
-                        <select name="company_symbol" id="company_symbol" class="form-control">
+                        <select name="company_symbol" id="company_symbol" class="form-control" required>
                             <option value="">Select a symbol</option>
                             @if (!empty($symbolData))
                                 @foreach ($symbolData as $symbol)
@@ -23,15 +23,15 @@
                     </div>
                     <div class="mb-3">
                         <label for="start_date" class="form-label">Start Date</label>
-                        <input type="text" class="form-control datepicker" id="start_date" name="start_date" value="{{ old('start_date') }}">
+                        <input type="text" class="form-control datepicker" id="start_date" name="start_date" value="{{ old('start_date') }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="end_date" class="form-label">End Date</label>
-                        <input type="text" class="form-control datepicker" id="end_date" name="end_date" value="{{ old('end_date') }}">
+                        <input type="text" class="form-control datepicker" id="end_date" name="end_date" value="{{ old('end_date') }}" required>
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -46,6 +46,8 @@
             $('.datepicker').datepicker({
                 dateFormat: 'yy-mm-dd'
             });
+            
+            $('form').validate();
         });
     </script>
 @endsection
