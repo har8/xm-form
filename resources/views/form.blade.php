@@ -4,8 +4,8 @@
     <div class="container">
         <div class="row justify-content-center">
            
-            <div class="col-md-6"> 
-                <div class="flex justify-content-center">
+            <div class="col-md-6 p-3"> 
+                <div class="flex justify-content-center mb-5">
 		            <img src="https://logosdownload.com/logo/XM-com-logo-512.png" />
                 </div>
                 <form action="{{ route('form.store') }}" method="POST">
