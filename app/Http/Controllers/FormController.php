@@ -21,7 +21,7 @@ class FormController extends Controller
     {
         // Validate the form inputs
         $validator = Validator::make($request->all(), [
-            'symbol' => 'required',
+            'company_symbol' => 'required',
             'start_date' => 'required|date|before_or_equal:end_date|before_or_equal:' . now()->format('Y-m-d'),
             'end_date' => 'required|date|after_or_equal:start_date|before_or_equal:' . now()->format('Y-m-d'),
             'email' => 'required|email',
