@@ -16,7 +16,9 @@
                             <option value="">Select a symbol</option>
                             @if (!empty($symbolData))
                                 @foreach ($symbolData as $symbol)
-                                    <option value="{{ $symbol['Symbol'] }}">{{ $symbol['Symbol'] }} - {{ $symbol['Company Name'] }}</option>
+                                <option value="{{ $symbol['Symbol'] }}" {{ old('company_symbol') == $symbol['Symbol'] ? 'selected' : '' }}>
+                                    {{ $symbol['Symbol'] }} - {{ $symbol['Company Name'] }}
+                                </option>
                                 @endforeach
                             @endif
                         </select>
