@@ -13,7 +13,6 @@ class HistoricalDataServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-		//$this->app->bind(SMSProvider::class, TelnyxSMSProvider::class);
 		$this->app->bind(HistoricalDataServiceInterface::class, function () {
           return new HistoricalDataService();
         });
