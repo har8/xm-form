@@ -77,8 +77,8 @@ class FormController extends Controller
         if ($response->successful()) {
             return $response->json();
         }
-    
-        return [];
+
+    	throw new \Exception('Ooops!! Failed to fetch data from Nasdaq.');
     }
    
 }
