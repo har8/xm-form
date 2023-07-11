@@ -2,11 +2,18 @@
 namespace App\Services;
 
 use App\Contracts\HistoricalDataServiceInterface;
+use Illuminate\Support\Facades\Http;
   
 class HistoricalDataService implements HistoricalDataServiceInterface
 {
-    public function fetchData($config)
+
+    public function fetchData(array $config, string $symbol) 
     {
-      return 'sss';
+			return Http::withHeaders([
+				'X-RapidAPI-Key' => $config['key'],
+				'X-RapidAPI-Host' => $config['host'],
+				])->get($config['url'], [
+					'symbol' => $symbol
+				]);
     }
 }

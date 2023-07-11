@@ -31,29 +31,27 @@ class FormController extends Controller
         return view('form')->with('symbolData', $this->symbolData);
     }
 
-    public function store(HistoricalQuotesRequest $request, HistoricalDataServiceInterface $historicalData)
+    public function store(HistoricalQuotesRequest $request, HistoricalDataServiceInterface $historicalDataService)
     {
         // Retrieve company name from the symbol using the cache
         $companyName = $this->symbolData->firstWhere('Symbol', $request->company_symbol)['Company Name'];
-//dd($historicalData->fetchData([]));
+		
+		$startDate = $request->input('start_date');
+		$endDate = $request->input('end_date');
+		$email = $request->input('email');
+		
+		$config = [
+			'url' => env('X_RAPIDAPI_URL'),
+			'key' => env('X_RAPIDAPI_KEY'),
+			'host' => env('X_RAPIDAPI_HOST')
+		];
+
 		try{
-			$apiUrl = 'https://yh-finance.p.rapidapi.com/stock/v3/get-historical-data';
-			$response = Http::withHeaders([
-				'X-RapidAPI-Key' => $_ENV['X_RAPIDAPI_KEY'],
-				'X-RapidAPI-Host' => $_ENV['X_RAPIDAPI_HOST'],
-			])->get($apiUrl, [
-				'symbol' => $request->company_symbol
-			]);
-			
+			$response = $historicalDataService->fetchData($config, $request->company_symbol);
 			if ($response->successful()) {
 				// Parse the API response and extract the historical data
 				$historicalData = $response->json()['prices'];
 
-				// Send the email
-				$startDate = $request->input('start_date');
-				$endDate = $request->input('end_date');
-				$email = $request->input('email');
-		        
 				Mail::to($email)->send(new CompanyDataEmail([
 					'companyName' => $companyName,
 					'startDate' => $startDate,
