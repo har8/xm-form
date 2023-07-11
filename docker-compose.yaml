@@ -18,6 +18,15 @@ services:
       - app
     networks:
       - app-network
+  mailpit:
+    image: 'axllent/mailpit:latest'
+    container_name: mailpit
+    restart: unless-stopped
+    ports:
+    - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+    - '${FORWARD_MAILPIT_UI_PORT:-8025}:8025'
+    networks:
+    - app-network
 networks:
   app-network:
     driver: bridge
