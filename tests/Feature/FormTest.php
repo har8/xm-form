@@ -2,14 +2,11 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Support\MessageBag;
 use Tests\TestCase;
 
 class FormTest extends TestCase
 {
-    use RefreshDatabase;
     use WithoutMiddleware;
 
     //Testing Form submission missing parameters.
