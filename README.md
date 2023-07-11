@@ -39,4 +39,4 @@ The application involves the following tests:
 1. Form view minimal test
 2. form validation and submission.
 
-To checkk the tests you can run the command `php artisan test`
+To check the tests you can run the command `php artisan test`
