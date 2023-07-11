@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     unzip
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo pdo_pgsql mbstring zip exif pcntl bcmath
+RUN docker-php-ext-install pdo mbstring zip exif pcntl bcmath
 
 # Copy the project files to the container
 COPY . .
@@ -24,6 +24,10 @@ RUN composer install --optimize-autoloader --no-dev
 
 # Set permissions for Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache
+
+
+# Set permissions for storage
+RUN chmod -R 755 storage
 
 # Generate the application key
 RUN php artisan key:generate
