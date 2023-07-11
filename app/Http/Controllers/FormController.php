@@ -21,7 +21,8 @@ class FormController extends Controller
 
     public function __construct(CompanySymbolServiceInterface $companySymbol)
     {
-        $this->symbolData = Cache::remember('symbolData', 60 * 60, function ($companySymbol) {
+		$url = env('NASDAQ_URL');
+        $this->symbolData = Cache::remember('symbolData', 60 * 60, function() use($companySymbol) {
             return collect($companySymbol->fetchData(env('NASDAQ_URL')));
         });
     }
