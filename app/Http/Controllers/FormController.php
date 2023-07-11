@@ -64,13 +64,13 @@ class FormController extends Controller
 				$startDate = $request->input('start_date');
 				$endDate = $request->input('end_date');
 				$email = $request->input('email');
-		/*        
+		        
 				Mail::to($email)->send(new CompanyDataEmail([
 					'companyName' => $companyName,
 					'startDate' => $startDate,
 					'endDate' => $endDate,
 				]));
-		*/
+		
 				return view('result', compact('historicalData', 'companyName', 'startDate', 'endDate'));	
 			}else{
 				throw new \Exception('Oops!! Service is unavailable, please try again later.');
