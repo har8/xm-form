@@ -52,6 +52,7 @@ class FormController extends Controller
 				// Parse the API response and extract the historical data
 				$historicalData = $response->json()['prices'];
 
+				//TODO: move to Mail Facade.
 				Mail::to($email)->send(new CompanyDataEmail([
 					'companyName' => $companyName,
 					'startDate' => $startDate,
@@ -70,6 +71,7 @@ class FormController extends Controller
 
     private function fetchSymbolData()
     {
+		//TODO: move to Symbol Service.
         $response = Http::get('https://pkgstore.datahub.io/core/nasdaq-listings/nasdaq-listed_json/data/a5bc7580d6176d60ac0b2142ca8d7df6/nasdaq-listed_json.json');
     
         if ($response->successful()) {
