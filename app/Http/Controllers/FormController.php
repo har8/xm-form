@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 
 use App\Mail\CompanyDataEmail;
 use App\Http\Requests\HistoricalQuotesRequest;
+use App\Contracts\HistoricalDataServiceInterface;
 
 
 class FormController extends Controller
@@ -30,11 +31,11 @@ class FormController extends Controller
         return view('form')->with('symbolData', $this->symbolData);
     }
 
-    public function store(HistoricalQuotesRequest $request)
+    public function store(HistoricalQuotesRequest $request, HistoricalDataServiceInterface $historicalData)
     {
         // Retrieve company name from the symbol using the cache
         $companyName = $this->symbolData->firstWhere('Symbol', $request->company_symbol)['Company Name'];
-
+//dd($historicalData->fetchData([]));
 		try{
 			$apiUrl = 'https://yh-finance.p.rapidapi.com/stock/v3/get-historical-data';
 			$response = Http::withHeaders([
