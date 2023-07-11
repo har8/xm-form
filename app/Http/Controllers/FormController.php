@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Redirect;
+
 use App\Mail\CompanyDataEmail;
+use App\Http\Requests\HistoricalQuotesRequest;
 
 
 class FormController extends Controller
@@ -29,21 +30,8 @@ class FormController extends Controller
         return view('form')->with('symbolData', $this->symbolData);
     }
 
-    public function store(Request $request)
+    public function store(HistoricalQuotesRequest $request)
     {
-        // Validate the form inputs
-        $validator = Validator::make($request->all(), [
-            'company_symbol' => 'required',
-            'start_date' => 'required|date|before_or_equal:end_date|before_or_equal:' . now()->format('Y-m-d'),
-            'end_date' => 'required|date|after_or_equal:start_date|before_or_equal:' . now()->format('Y-m-d'),
-            'email' => 'required|email',
-        ]);
-
-        // Check if validation fails
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
         // Retrieve company name from the symbol using the cache
         $companyName = $this->symbolData->firstWhere('Symbol', $request->company_symbol)['Company Name'];
 
