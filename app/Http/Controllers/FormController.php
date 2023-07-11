@@ -12,16 +12,18 @@ use Illuminate\Support\Facades\Redirect;
 use App\Mail\CompanyDataEmail;
 use App\Http\Requests\HistoricalQuotesRequest;
 use App\Contracts\HistoricalDataServiceInterface;
+use App\Contracts\CompanySymbolServiceInterface;
 
 
 class FormController extends Controller
 {
     private $symbolData;
 
-    public function __construct()
+    public function __construct(CompanySymbolServiceInterface $companySymbol)
     {
-        $this->symbolData = Cache::remember('symbolData', 60 * 60, function () {
-            return collect($this->fetchSymbolData());
+		$url = env('NASDAQ_URL');
+        $this->symbolData = Cache::remember('symbolData', 60 * 60, function() use($companySymbol) {
+            return collect($companySymbol->fetchData(env('NASDAQ_URL')));
         });
     }
 
@@ -69,16 +71,4 @@ class FormController extends Controller
 		}
     }
 
-    private function fetchSymbolData()
-    {
-		//TODO: move to Symbol Service.
-        $response = Http::get('https://pkgstore.datahub.io/core/nasdaq-listings/nasdaq-listed_json/data/a5bc7580d6176d60ac0b2142ca8d7df6/nasdaq-listed_json.json');
-    
-        if ($response->successful()) {
-            return $response->json();
-        }
-
-    	throw new \Exception('Ooops!! Failed to fetch data from Nasdaq.');
-    }
-   
 }

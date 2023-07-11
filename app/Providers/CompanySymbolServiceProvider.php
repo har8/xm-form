@@ -3,18 +3,18 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Contracts\HistoricalDataServiceInterface;
-use App\Services\HistoricalDataService;
+use App\Contracts\CompanySymbolServiceInterface;
+use App\Services\CompanySymbolService;
 
-class HistoricalDataServiceProvider extends ServiceProvider
+class CompanySymbolServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
      */
     public function register(): void
     {
-		$this->app->bind(HistoricalDataServiceInterface::class, function () {
-          return new HistoricalDataService();
+		$this->app->bind(CompanySymbolServiceInterface::class, function () {
+          return new CompanySymbolService();
         });
     }
 
