@@ -2,12 +2,10 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
 class FormTest extends TestCase
 {
-    use WithoutMiddleware;
 
     //Testing Form submission missing parameters.
     public function testFormValidation()
