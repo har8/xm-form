@@ -19,7 +19,7 @@
         <tbody>
         @foreach ($historicalData as $key => $data) 
                 <tr>
-                    <td>{{ $data['date'] }}</td>
+                    <td>{{ date('Y-m-d H:i:s', $data['date']) }}</td>
                     <td>{{ $data['open'] ?? '' }}</td>
                     <td>{{ $data['high'] ?? '' }}</td>
                     <td>{{ $data['low'] ?? '' }}</td>
