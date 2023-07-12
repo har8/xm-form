@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Http;
 class HistoricalDataService implements HistoricalDataServiceInterface
 {
 
-    public function fetchData(array $config, string $symbol) 
+    public function fetchData(string $symbol) 
     {
 			return Http::withHeaders([
-				'X-RapidAPI-Key' => $config['key'],
-				'X-RapidAPI-Host' => $config['host'],
-				])->get($config['url'], [
+				'X-RapidAPI-Key' => env('X_RAPIDAPI_KEY'),
+				'X-RapidAPI-Host' => env('X_RAPIDAPI_HOST'),
+				])->get(env('X_RAPIDAPI_URL'), [
 					'symbol' => $symbol
 				]);
     }

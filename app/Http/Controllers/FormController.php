@@ -21,8 +21,7 @@ class FormController extends Controller
 
     public function __construct(CompanySymbolServiceInterface $companySymbol)
     {
-		$url = env('NASDAQ_URL');
-        $this->symbolData = Cache::remember('symbolData', 60 * 60, function() use($companySymbol) {
+        $this->symbolData = Cache::remember('symbolData', 60 * 60, function () use ($companySymbol) {
             return collect($companySymbol->fetchData(env('NASDAQ_URL')));
         });
     }
@@ -41,30 +40,23 @@ class FormController extends Controller
 		$startDate = $request->input('start_date');
 		$endDate = $request->input('end_date');
 		$email = $request->input('email');
-		
-		$config = [
-			'url' => env('X_RAPIDAPI_URL'),
-			'key' => env('X_RAPIDAPI_KEY'),
-			'host' => env('X_RAPIDAPI_HOST')
-		];
 
 		try{
-			$response = $historicalDataService->fetchData($config, $request->company_symbol);
-			if ($response->successful()) {
-				// Parse the API response and extract the historical data
-				$historicalData = $response->json()['prices'];
-
-				//TODO: move to Mail Facade.
-				Mail::to($email)->send(new CompanyDataEmail([
-					'companyName' => $companyName,
-					'startDate' => $startDate,
-					'endDate' => $endDate,
-				]));
-		
-				return view('result', compact('historicalData', 'companyName', 'startDate', 'endDate'));	
-			}else{
+			$response = $historicalDataService->fetchData($request->company_symbol);
+			if (!$response->successful()) {
 				throw new \Exception('Oops!! Service is unavailable, please try again later.');
-			}			
+			}
+			// Parse the API response and extract the historical data
+			$historicalData = $response->json()['prices'];
+
+			//TODO: move to Mail Service.
+			Mail::to($email)->send(new CompanyDataEmail([
+				'companyName' => $companyName,
+				'startDate' => $startDate,
+				'endDate' => $endDate,
+			]));
+	
+			return view('result', compact('historicalData', 'companyName', 'startDate', 'endDate'));				
 		} catch (\Exception $e) {
 			$errorMessage = $e->getMessage();
 			return Redirect::back()->with('warning', $errorMessage)->withInput();
